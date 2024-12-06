@@ -3,7 +3,7 @@
 {% block content %}
     <div class="text-center mb-4">
         <h1 class="display-4">Reserva de Habitación</h1>
-        <p class="text-muted">Complete los campos para reservar su habitación</p>
+        <p class="text-muted">Complete los campos para reservar Habitación</p>
     </div>
 
     <!-- Mensajes de feedback -->
@@ -26,7 +26,7 @@
         <!-- Botones de acción -->
         <div class="d-flex justify-content-end mt-4">
             <button type="submit" class="btn btn-primary me-2">Reservar</button>
-            <a href="{% url 'home' %}" class="btn btn-secondary">Volver</a>
+            <a href="{% url 'listadoReservas' %}" class="btn btn-secondary">Volver</a>
         </div>
     </form>
 {% endblock %}

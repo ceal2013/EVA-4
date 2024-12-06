@@ -14,37 +14,37 @@ class ReservaForm(forms.ModelForm):
         
     titular = forms.CharField(label='Nombre Contacto', max_length=100, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Ingrese el nombre del contacto'
+        'placeholder': 'Ingresar nombre del contacto'
     }))
     tipoHab = forms.ModelChoiceField(queryset=TipoHab.objects.all(), label='Categoría', widget=forms.Select(attrs={
         'class': 'form-select'
     }))
-    pax = forms.IntegerField(label='Número de huéspedes', widget=forms.NumberInput(attrs={
+    pax = forms.IntegerField(label='Número huéspedes', widget=forms.NumberInput(attrs={
         'class': 'form-control',
         'min': '1',
-        'placeholder': 'Ingrese el número de huéspedes'
+        'placeholder': 'Ingresar número de huéspedes'
     }))
     fono = forms.CharField(label='Teléfono', max_length=15, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Ingrese su número de teléfono'
+        'placeholder': 'Ingresar teléfono de contacto'
     }))
     garantia = forms.CharField(label='Garantía', max_length=4, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': '4 últimos dígitos de su tarjeta'
+        'placeholder': '4 últimos dígitos de tarjeta'
     }))
-    fecha_entrada = forms.DateField(label='Fecha de Ingreso', widget=forms.DateInput(attrs={
+    fecha_entrada = forms.DateField(label='Fecha Ingreso', widget=forms.DateInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Ingrese la fecha de ingreso',
+        'placeholder': 'Ingresar fecha de ingreso',
         'type': 'date'
     }))
-    fecha_salida = forms.DateField(label='Fecha de Salida', widget=forms.DateInput(attrs={
+    fecha_salida = forms.DateField(label='Fecha Salida', widget=forms.DateInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Ingrese la fecha de salida',
+        'placeholder': 'Ingrese fecha de salida',
         'type': 'date'
     }))
-    nota = forms.CharField(label='Observaciones para su Reserva', required=False, widget=forms.Textarea(attrs={
+    nota = forms.CharField(label='Observaciones para la Reserva', required=False, widget=forms.Textarea(attrs={
         'class': 'form-control',
-        'placeholder': 'Ingrese observaciones adicionales para su reserva (opcional)',
+        'placeholder': 'Ingresar observaciones adicionales para la reserva (opcional)',
         'rows': 3  # Ajusta el tamaño del área de texto
     }))
 
