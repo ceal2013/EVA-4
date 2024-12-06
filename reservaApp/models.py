@@ -21,7 +21,7 @@ class Reserva(models.Model):
     fecha_entrada = models.DateField(default=date.today)
     fecha_salida = models.DateField(default=date.today)
     status = models.CharField(max_length=1, choices=[('R', 'Reservado'), ('I', 'Ingresado')], default='R')
-    total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    total = models.DecimalField(max_digits=10, decimal_places=1, blank=True, null=True)
     nota = models.TextField(blank=True, null=True)      # Nota adicional
 
     def __str__(self):
