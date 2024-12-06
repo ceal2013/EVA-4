@@ -1,65 +1,43 @@
-<!-- checkinApp/listadoCheckin.html -->
+{% extends 'reservasApp/gestionReservas.html' %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <title>Listado de Check In</title>
-</head>
-<body>
+{% block content %}
+<!-- Contenido específico para la vista de listado de check-in -->
 
-    <div class="container mt-5">
-        <h2>Listado de Reservas Pendientes de Check In</h2>
+<h1 class="welcome-text">Listado de Check-in</h1>
+<p class="lead">A continuación se muestra el listado de reservas que esperan check-in.</p>
 
-        {% if messages %}
-        <div class="container">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th># Reserva</th>
-                        <th>Titular</th>
-                        <th>Fecha Entrada</th>
-                        <th>Fecha Salida</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reserva in reservas %}
-                        <tr>
-                            <td>{{ reserva.id }}</td>
-                            <td>{{ reserva.titular }}</td>
-                            <td>{{ reserva.fecha_entrada }}</td>
-                            <td>{{ reserva.fecha_salida }}</td>
-                            <td>
-                                <form method="POST" action="{% url 'checkinReserva' reserva.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary">Check In</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="mb-3">
-            <a href="{% url 'gestionReservas' %}" class="btn btn-primary btn-sm">Volver</a>
-        </div>
-
+<!-- Tabla de Check-ins -->
+<div class="main-content">
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle table-hover text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Reserva</th>
+                    <th scope="col">Nombre Titular</th>
+                    <th scope="col">Habitación</th>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Salida</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <th scope="row">{{ reserva.id }}</th>
+                    <td>{{ reserva.titular }}</td>
+                    <td>{{ reserva.tipoHab }}</td>
+                    <td>{{ reserva.fecha_entrada|date:"d-m-Y" }}</td>
+                    <td>{{ reserva.fecha_salida|date:"d-m-Y" }}</td>
+                    <td>
+                        <!-- Botones de acción -->
+                        <a href="{% url 'checkinReserva' reserva.id %}" class="btn btn-primary btn-sm">Check-in</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    
+</div>
 
-</body>
-</html>
+{% endblock %}
