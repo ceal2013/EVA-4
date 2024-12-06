@@ -1,11 +1,19 @@
 <!-- listadoReservas.html -->
 {% extends 'reservasApp/gestionReservas.html' %}
 
+<style>
+    .custom-header {
+        background-color: #003366; /* Azul oscuro */
+        color: white; /* Texto blanco */
+    }
+</style>
+
 {% block content %}
 <div class="container mt-5">
-    <h2>Listado de Reservas</h2>
-    <table class="table table-bordered">
-        <thead>
+    
+    <h2 class="text-center mb-4">Reservas Vigentes</h2>
+    <table class="table table-bordered table-hover text-center">
+        <thead class="custom-header">
             <tr>
                 <th>Reserva</th>
                 <th>Nombre del Huésped</th>
@@ -33,17 +41,20 @@
                 <td>{{ reserva.garantia }}</td>
                 <td>{{ reserva.total }}</td>
                 <td>{{ reserva.nota }}</td>
-                <td>
-                    <a href="{% url 'actualizarReserva' reserva.id %}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Editar Reserva">
+                <td class="d-flex justify-content-center gap-2">
+                    <!-- Botón Editar -->
+                    <a href="{% url 'actualizarReserva' reserva.id %}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar Reserva">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
+                    <!-- Botón Eliminar -->
                     <form action="{% url 'eliminarReserva' reserva.id %}" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta reserva?');">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar Reserva">
+                        <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Eliminar Reserva">
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
-                    <a href="{% url 'descargar_pdf' reserva.id %}" class="btn btn-info btn-sm" data-toggle="tooltip" title="Exportar Confirmación">
+                    <!-- Botón Descargar PDF -->
+                    <a href="{% url 'descargar_pdf' reserva.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Exportar Confirmación">
                         <i class="bi bi-file-earmark-pdf"></i>
                     </a>
                 </td>
