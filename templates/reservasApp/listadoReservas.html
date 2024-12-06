@@ -1,67 +1,62 @@
 <!-- listadoReservas.html -->
 {% extends 'reservasApp/gestionReservas.html' %}
 
-<style>
-    .custom-header {
-        background-color: #003366; /* Azul oscuro */
-        color: white; /* Texto blanco */
-    }
-</style>
-
 {% block content %}
 <div class="container mt-5">
-    
     <h2 class="text-center mb-4">Reservas Vigentes</h2>
-    <table class="table table-bordered table-hover text-center">
-        <thead class="custom-header">
-            <tr>
-                <th>Reserva</th>
-                <th>Nombre del Huésped</th>
-                <th>Ingreso</th>
-                <th>Salida</th>
-                <th>Habitación</th>
-                <th>Pax</th>
-                <th>Fono</th>
-                <th>Garantía</th>
-                <th>Total</th>
-                <th>Observaciones</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for reserva in reservas %}
-            <tr>
-                <td>{{ reserva.id }}</td>
-                <td>{{ reserva.titular }}</td>
-                <td>{{ reserva.fecha_entrada|date:"d-m-Y" }}</td>
-                <td>{{ reserva.fecha_salida|date:"d-m-Y" }}</td>
-                <td>{{ reserva.tipoHab }}</td>
-                <td>{{ reserva.pax }}</td>
-                <td>{{ reserva.fono }}</td>
-                <td>{{ reserva.garantia }}</td>
-                <td>{{ reserva.total }}</td>
-                <td>{{ reserva.nota }}</td>
-                <td class="d-flex justify-content-center gap-2">
-                    <!-- Botón Editar -->
-                    <a href="{% url 'actualizarReserva' reserva.id %}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar Reserva">
-                        <i class="bi bi-pencil-fill"></i>
-                    </a>
-                    <!-- Botón Eliminar -->
-                    <form action="{% url 'eliminarReserva' reserva.id %}" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta reserva?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Eliminar Reserva">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                    <!-- Botón Descargar PDF -->
-                    <a href="{% url 'descargar_pdf' reserva.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Exportar Confirmación">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle table-hover text-center">
+            <thead class="table-primary">
+                <tr>
+                    <th>Reserva</th>
+                    <th>Titular</th>
+                    <th>Ingreso</th>
+                    <th>Salida</th>
+                    <th>Habitación</th>
+                    <th>Pax</th>
+                    <th>Fono</th>
+                    <th>Garantía</th>
+                    <th>Total</th>
+                    <th>Observaciones</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.id }}</td>
+                    <td>{{ reserva.titular }}</td>
+                    <td>{{ reserva.fecha_entrada|date:"d-m-Y" }}</td>
+                    <td>{{ reserva.fecha_salida|date:"d-m-Y" }}</td>
+                    <td>{{ reserva.tipoHab }}</td>
+                    <td>{{ reserva.pax }}</td>
+                    <td>{{ reserva.fono }}</td>
+                    <td>{{ reserva.garantia }}</td>
+                    <td>{{ reserva.total }}</td>
+                    <td>{{ reserva.nota }}</td>
+                    <td class="d-flex justify-content-center gap-2">
+                        <!-- Botón Editar -->
+                        <a href="{% url 'actualizarReserva' reserva.id %}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar Reserva">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <!-- Botón Eliminar -->
+                        <form action="{% url 'eliminarReserva' reserva.id %}" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta reserva?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Eliminar Reserva">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                        <!-- Botón Descargar PDF -->
+                        <a href="{% url 'descargar_pdf' reserva.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Exportar Confirmación">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
     <div class="mb-3">
         <a href="{% url 'reservar' %}" class="btn btn-success">Nueva Reserva</a>
         <a href="{% url 'gestionReservas' %}" class="btn btn-primary">Volver</a>
