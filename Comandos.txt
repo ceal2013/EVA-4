@@ -1,0 +1,2 @@
+<<< Instalar rest_framework en Visual Studio >>>
+pip install djangorestframework

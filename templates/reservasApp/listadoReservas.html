@@ -1,0 +1,59 @@
+<!-- listadoReservas.html -->
+{% extends 'reservasApp/gestionReservas.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Listado de Reservas</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Número de Reserva</th>
+                <th>Nombre del Huésped</th>
+                <th>Fecha Ingreso</th>
+                <th>Fecha Salida</th>
+                <th>Tipo de Habitación</th>
+                <th>Número de Huéspedes</th>
+                <th>Fono Contacto</th>
+                <th>Garantía</th>
+                <th>Total</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.id }}</td>
+                <td>{{ reserva.titular }}</td>
+                <td>{{ reserva.fecha_entrada|date:"d-m-Y" }}</td>
+                <td>{{ reserva.fecha_salida|date:"d-m-Y" }}</td>
+                <td>{{ reserva.tipoHab }}</td>
+                <td>{{ reserva.pax }}</td>
+                <td>{{ reserva.fono }}</td>
+                <td>{{ reserva.garantia }}</td>
+                <td>{{ reserva.total }}</td>
+                <td>{{ reserva.nota }}</td>
+                <td>
+                    <a href="{% url 'actualizarReserva' reserva.id %}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Editar Reserva">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <form action="{% url 'eliminarReserva' reserva.id %}" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta reserva?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar Reserva">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                    <a href="{% url 'descargar_pdf' reserva.id %}" class="btn btn-info btn-sm" data-toggle="tooltip" title="Exportar Confirmación">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-3">
+        <a href="{% url 'reservar' %}" class="btn btn-success">Nueva Reserva</a>
+        <a href="{% url 'gestionReservas' %}" class="btn btn-primary">Volver</a>
+    </div>
+</div>
+{% endblock %}
