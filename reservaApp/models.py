@@ -6,11 +6,11 @@ from datetime import date
 class TipoHab(models.Model):
     tipo = models.CharField(max_length=3, unique=True)
     nombre = models.CharField(max_length=50)
-    tarifa = models.DecimalField(max_digits=10, decimal_places=2)
+    tarifa = models.IntegerField()
     cantidad = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.nombre} - {self.tarifa}"
+        return f"{self.tipo} - {self.nombre} - {self.tarifa}"
 
 class Reserva(models.Model):
     titular = models.CharField(max_length=100)
@@ -21,7 +21,7 @@ class Reserva(models.Model):
     fecha_entrada = models.DateField(default=date.today)
     fecha_salida = models.DateField(default=date.today)
     status = models.CharField(max_length=1, choices=[('R', 'Reservado'), ('I', 'Ingresado')], default='R')
-    total = models.DecimalField(max_digits=10, decimal_places=1, blank=True, null=True)
+    total = models.IntegerField(blank=True, null=True)
     nota = models.TextField(blank=True, null=True)      # Nota adicional
 
     def __str__(self):
