@@ -1,9 +1,9 @@
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Reserva, TipoHab
-from .serializers import ReservaSerializer, TipoHabSerializer
+from .serializers import ReservaSerializer
 from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
@@ -13,76 +13,39 @@ def api_dashboard_view(request):
     # Lógica para mostrar la interfaz de la API
     return render(request, 'api_dashboard.html')
 
-class ReservaListCreateAPIView(APIView):
+class ReservaListCreateAPIView(ListCreateAPIView):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+    permission_classes = [IsAdminUser]  # Solo superusuarios pueden acceder
 
-    permission_classes = [IsAdminUser]  # Solo permite acceso a superusuarios.
-
-    """
-    Listar todas las reservas o crear una nueva reserva.
-    """
-    def get(self, request):
-        reservas = Reserva.objects.all()
-        serializer = ReservaSerializer(reservas, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        data = request.data
-        tipo_hab = TipoHab.objects.get(id=data['tipoHab'])
+    def perform_create(self, serializer):
+        # Obtener datos del formulario
+        tipo_hab = serializer.validated_data['tipoHab']
+        fecha_entrada = serializer.validated_data['fecha_entrada']
+        fecha_salida = serializer.validated_data['fecha_salida']
 
         # Verificar disponibilidad
         if tipo_hab.cantidad < 1:
-            return Response({'error': 'No hay disponibilidad para esta categoría de habitación.'}, status=status.HTTP_400_BAD_REQUEST)
+            raise serializers.ValidationError({'tipoHab': 'No hay disponibilidad para esta categoría de habitación.'})
 
         # Calcular total según noches
-        fecha_entrada = datetime.strptime(data['fecha_entrada'], "%Y-%m-%d")
-        fecha_salida = datetime.strptime(data['fecha_salida'], "%Y-%m-%d")
         noches = (fecha_salida - fecha_entrada).days
         if noches < 1:
-            return Response({'error': 'La fecha de salida debe ser posterior a la fecha de entrada.'}, status=status.HTTP_400_BAD_REQUEST)
+            raise serializers.ValidationError({'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de entrada.'})
         
         total = noches * tipo_hab.tarifa
 
-        # Crear reserva
-        data['total'] = total
-        serializer = ReservaSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            # Reducir cantidad de habitaciones
-            tipo_hab.cantidad -= 1
-            tipo_hab.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Actualizar campos automáticos y guardar
+        serializer.save(total=total, status='R')
+        tipo_hab.cantidad -= 1
+        tipo_hab.save()
 
-class ReservaDetailAPIView(APIView):
 
-    permission_classes = [IsAdminUser]  # Solo permite acceso a superusuarios.
+class ReservaDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+    permission_classes = [IsAdminUser]  # Solo superusuarios pueden acceder
 
-    """
-    Obtener, actualizar o eliminar una reserva específica.
-    """
-    def get(self, request, pk):
-        try:
-            reserva = Reserva.objects.get(pk=pk)
-            serializer = ReservaSerializer(reserva)
-            return Response(serializer.data)
-        except Reserva.DoesNotExist:
-            return Response({'error': 'Reserva no encontrada'}, status=status.HTTP_404_NOT_FOUND)
-
-    def put(self, request, pk):
-        try:
-            reserva = Reserva.objects.get(pk=pk)
-            serializer = ReservaSerializer(reserva, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Reserva.DoesNotExist:
-            return Response({'error': 'Reserva no encontrada'}, status=status.HTTP_404_NOT_FOUND)
-
-    def delete(self, request, pk):
-        try:
-            reserva = Reserva.objects.get(pk=pk)
-            reserva.delete()
-            return Response({'message': 'Reserva eliminada con éxito'}, status=status.HTTP_204_NO_CONTENT)
-        except Reserva.DoesNotExist:
-            return Response({'error': 'Reserva no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+    def perform_update(self, serializer):
+        # Si es necesario, puedes validar y actualizar campos adicionales aquí
+        serializer.save()
