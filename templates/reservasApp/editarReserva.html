@@ -17,7 +17,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fas fa-save"></i> Guardar Cambios
                     </button>
-                    <a href="{% url 'listadoReservas' %}" class="btn btn-secondary">
+                    <a href="{% url 'listadoReservas' %}" class="btn btn-secondary" onclick="return confirm('¿Estás seguro de que deseas cancelar la modificación?')">
                         <i class="fas fa-times"></i> Cancelar
                     </a>
                 </div>
