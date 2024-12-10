@@ -37,12 +37,11 @@
             border-bottom: 1px solid #ddd;
         }
         .sidebar-header img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            margin-right: 10px;
+            width: 100%; /* Imagen responsiva */
+            max-width: 120px; /* Limitar tamaño máximo */
+            height: auto; /* Mantener proporción */
         }
-        .sidebar-header span {
+        .sidebar-header h2 {
             font-size: 1.25rem;
             font-weight: bold;
             color: #333;
@@ -119,9 +118,8 @@
         <!-- Sidebar -->
         <nav class="sidebar d-flex flex-column">
             <div>
-                <div class="sidebar-header">
+                <div class="sidebar-header d-flex flex-column align-items-center">
                     <img src="/static/logohotelnew.png" alt="Logo">
-                    <span>HotelNew App</span>
                 </div>
                 <hr class="my-0">
 
