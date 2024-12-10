@@ -25,28 +25,41 @@
                 </a>
                 
                 <!-- Botón para gestionar una reserva específica -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Titular</th>
-                            <th>Fecha Entrada</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for reserva in reservas %}
+                 <div class="table-responsive">
+                    <table class="table table-bordered align-middle table-hover text-center">
+                        <thead class="table-primary">
                             <tr>
-                                <td>{{ reserva.id }}</td>
-                                <td>{{ reserva.titular }}</td>
-                                <td>{{ reserva.fecha_entrada }}</td>
-                                <td>
-                                    <a href="{% url 'api_reserva-detail' pk=reserva.id %}" class="btn btn-outline-danger">Gestionar</a>
-                                </td>
+                                <th scope="col">Reserva</th>
+                                <th>Titular</th>
+                                <th>Contacto</th>
+                                <th>Ingreso</th>
+                                <th>Salida</th>
+                                <th>Habitación</th>
+                                <th>Total</th>
+                                <th>Observaciones</th>
+                                <th>Acción</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for reserva in reservas %}
+                                <tr>
+                                    <td>{{ reserva.id }}</td>
+                                    <td>{{ reserva.titular }}</td>
+                                    <td>{{ reserva.fono }}</td>
+                                    <td>{{ reserva.fecha_entrada|date:"d-m-Y" }}</td>
+                                    <td>{{ reserva.fecha_salida|date:"d-m-Y" }}</td>
+                                    <td>{{ reserva.tipoHab }}</td>
+                                    <td>{{ reserva.total }}</td>
+                                    <td>{{ reserva.nota }}</td>
+                                    <td>
+                                        <a href="{% url 'api_reserva-detail' pk=reserva.id %}" class="btn btn-outline-danger">Gestionar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+
             </div>
         </div>
     </div>
