@@ -196,6 +196,7 @@ def editarCategoria(request, categoria_id):
         form = CategoriaForm(request.POST, instance=categoria)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Categoría actualizada con éxito.')
             return redirect('listadoCategorias')
     else:
         form = CategoriaForm(instance=categoria)

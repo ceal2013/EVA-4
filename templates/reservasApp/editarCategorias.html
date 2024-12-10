@@ -1,21 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <title>Editar Categoría de Habitación</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Editar Categoría de Habitación</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <a href="{% url 'listadoCategorias' %}" class="btn btn-secondary">Cancelar</a>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "reservasApp/gestionReservas.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Editando Categoría</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'listadoCategorias' %}" class="btn btn-secondary">Cancelar</a>
+                </div>                
+            </form>>
+        </div>
+</div>
+{% endblock %}
 
