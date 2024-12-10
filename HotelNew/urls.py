@@ -38,7 +38,7 @@ urlpatterns = [
 
     # Rutas de la API
     path('api/dashboard/', api_views.api_dashboard_view, name='apiDashboard'),
-    path('api/reservas/', ReservaListCreateAPIView.as_view(), name='api_reserva_list_create'),
-    path('api/reservas/<int:pk>/', ReservaDetailAPIView.as_view(), name='api_reserva_detail'),
+    path('api/reservas/', ReservaListCreateAPIView.as_view(), name='api_reserva-list-create'),
+    path('api/reservas/<int:pk>/', ReservaDetailAPIView.as_view(), name='api_reserva-detail'),
 
 ]

@@ -14,7 +14,7 @@
             
             <div class="d-grid gap-2">
                 <!-- Botón para listar todas las reservas -->
-                <a href="{% url 'api_reserva_list_create' %}" class="btn btn-outline-info">
+                <a href="{% url 'api_reserva-list-create' %}" class="btn btn-outline-info">
                     Listar Reservas
                 </a>
 
@@ -25,9 +25,28 @@
                 </a>
                 
                 <!-- Botón para gestionar una reserva específica -->
-                <a href="{% url 'reserva-detail' pk=1 %}" class="btn btn-outline-danger">
-                    Gestionar Reserva (ID Específico)
-                </a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titular</th>
+                            <th>Fecha Entrada</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in reservas %}
+                            <tr>
+                                <td>{{ reserva.id }}</td>
+                                <td>{{ reserva.titular }}</td>
+                                <td>{{ reserva.fecha_entrada }}</td>
+                                <td>
+                                    <a href="{% url 'api_reserva-detail' pk=reserva.id %}" class="btn btn-outline-danger">Gestionar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
