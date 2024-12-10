@@ -12,7 +12,8 @@ from django.contrib.auth.decorators import user_passes_test
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
 def api_dashboard_view(request):
     # Lógica para mostrar la interfaz de la API
-    return render(request, 'reservasApp/api_dashboard.html')
+    reservas = Reserva.objects.filter(status='R').order_by('id')
+    return render(request, 'reservasApp/api_dashboard.html', {'reservas': reservas})
 
 class ReservaListCreateAPIView(ListCreateAPIView):
     queryset = Reserva.objects.all()
