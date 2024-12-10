@@ -138,7 +138,9 @@
                         <div id="configuracionCollapse" class="accordion-collapse collapse" aria-labelledby="configuracionHeading" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-group list-group-flush">
+                                    {% if user.is_superuser %}
                                     <li class="list-group-item"><a href="{% url 'listadoCategorias' %}" class="text-decoration-none">Editar Habitaciones</a></li>
+                                    {% endif %}
                                     {% if user.is_superuser %}
                                     <li class="list-group-item"><a href="{% url 'apiDashboard' %}" class="text-decoration-none">Gestión API</a></li>
                                     {% endif %}
