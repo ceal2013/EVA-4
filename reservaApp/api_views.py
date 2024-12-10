@@ -48,3 +48,14 @@ class ReservaDetailAPIView(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         # Si es necesario, puedes validar y actualizar campos adicionales aquí
         serializer.save()
+
+    def perform_destroy(self, instance):
+        # Obtener el tipo de habitación asociada a la reserva eliminada
+        tipo_hab = instance.tipoHab
+        
+        # Incrementar la cantidad de habitaciones disponibles en TipoHab
+        tipo_hab.cantidad += 1
+        tipo_hab.save()
+
+        # Eliminar la reserva
+        instance.delete()
