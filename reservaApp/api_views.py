@@ -1,11 +1,22 @@
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Reserva, TipoHab
 from .serializers import ReservaSerializer, TipoHabSerializer
 from datetime import datetime
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(lambda u: u.is_superuser)
+def api_dashboard_view(request):
+    # Lógica para mostrar la interfaz de la API
+    return render(request, 'api_dashboard.html')
 
 class ReservaListCreateAPIView(APIView):
+
+    permission_classes = [IsAdminUser]  # Solo permite acceso a superusuarios.
+
     """
     Listar todas las reservas o crear una nueva reserva.
     """
@@ -43,6 +54,9 @@ class ReservaListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ReservaDetailAPIView(APIView):
+
+    permission_classes = [IsAdminUser]  # Solo permite acceso a superusuarios.
+
     """
     Obtener, actualizar o eliminar una reserva específica.
     """

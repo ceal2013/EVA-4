@@ -139,6 +139,9 @@
                             <div class="accordion-body">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item"><a href="{% url 'listadoCategorias' %}" class="text-decoration-none">Editar Habitaciones</a></li>
+                                    {% if user.is_superuser %}
+                                    <li class="list-group-item"><a href="{% url 'apiDashboard' %}" class="text-decoration-none">Gestión API</a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>

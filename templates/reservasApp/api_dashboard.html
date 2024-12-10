@@ -1,0 +1,38 @@
+{% extends "reservasApp/gestionReservas.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Gestión de la API</h2>
+    <p class="text-muted">Desde aquí puedes interactuar con las funcionalidades avanzadas de la API.</p>
+    
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            Opciones de la API
+        </div>
+        <div class="card-body">
+            <p class="mb-3">Selecciona una de las siguientes acciones disponibles:</p>
+            
+            <div class="d-grid gap-2">
+                <!-- Botón para listar todas las reservas -->
+                <a href="{% url 'reserva-list-create' %}" class="btn btn-outline-info">
+                    Listar Reservas
+                </a>
+                
+                <!-- Botón para crear una nueva reserva -->
+                <a href="{% url 'reserva-list-create' %}" class="btn btn-outline-success">
+                    Crear Reserva
+                </a>
+                
+                <!-- Botón para gestionar una reserva específica -->
+                <a href="{% url 'reserva-detail' pk=1 %}" class="btn btn-outline-danger">
+                    Gestionar Reserva (ID Específico)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning mt-4" role="alert">
+        <strong>Nota:</strong> Estas acciones son críticas. Asegúrate de conocer el impacto de cada una antes de proceder.
+    </div>
+</div>
+{% endblock %}

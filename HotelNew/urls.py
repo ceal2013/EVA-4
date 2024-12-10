@@ -36,6 +36,8 @@ urlpatterns = [
     path('eliminarCategoria/<int:categoria_id>/', views.eliminarCategoria, name='eliminarCategoria'),
 
     # Rutas de la API
-    path('api/reservas/', api_views.ReservaListCreateAPIView.as_view(), name='api_reserva_list_create'),
-    path('api/reservas/<int:pk>/', api_views.ReservaDetailAPIView.as_view(), name='api_reserva_detail'),
+    path('api/dashboard/', api_views.api_dashboard_view, name='api-dashboard'),
+    path('api/reservas/', api_views.ReservaListCreateAPIView.as_view(), name='reserva-list-create'),
+    path('api/reservas/<int:pk>/', api_views.ReservaDetailAPIView.as_view(), name='reserva-detail'),
+
 ]
