@@ -63,19 +63,28 @@ class ReservaDetailAPIView(LoginRequiredMixin, RetrieveUpdateDestroyAPIView):
         if tipo_hab_nuevo.cantidad < 1:
             raise serializers.ValidationError({'tipoHab': 'No hay disponibilidad para esta categoría de habitación.'})
 
-        if fecha_entrada_nueva != reserva.fecha_entrada or fecha_salida_nueva != reserva.fecha_salida:
-            noches = (fecha_salida_nueva - fecha_entrada_nueva).days
-            if noches < 1:
-                raise serializers.ValidationError({'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de entrada.'})
+        # Calcula las noches independientemente de si las fechas cambian o no
+        noches = (fecha_salida_nueva - fecha_entrada_nueva).days
+        if noches < 1:
+            raise serializers.ValidationError({'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de entrada.'})
 
         total = noches * tipo_hab_nuevo.tarifa
         reserva.total = total
-        reserva.tipoHab.cantidad += 1
-        tipo_hab_nuevo.cantidad -= 1
-        tipo_hab_nuevo.save()
-        
-        serializer.save(total=total, tipoHab=tipo_hab_nuevo, fecha_entrada=fecha_entrada_nueva, fecha_salida=fecha_salida_nueva)
-        reserva.tipoHab.save()
+
+        # Ajusta las cantidades de habitaciones
+        if tipo_hab_nuevo != reserva.tipoHab:
+            reserva.tipoHab.cantidad += 1  # Devuelve la habitación anterior
+            tipo_hab_nuevo.cantidad -= 1  # Resta la nueva habitación
+            tipo_hab_nuevo.save()
+            reserva.tipoHab.save()
+
+        # Guarda los cambios en el serializer
+        serializer.save(
+            total=total,
+            tipoHab=tipo_hab_nuevo,
+            fecha_entrada=fecha_entrada_nueva,
+            fecha_salida=fecha_salida_nueva
+        )
 
     def perform_destroy(self, instance):
         tipo_hab = instance.tipoHab
